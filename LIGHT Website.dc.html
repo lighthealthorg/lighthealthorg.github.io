@@ -1,0 +1,589 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin="">
+<link href="https://fonts.googleapis.com/css2?family=Newsreader:ital,opsz,wght@0,6..72,400;0,6..72,500;0,6..72,600;1,6..72,400;1,6..72,500&amp;family=Hanken+Grotesk:wght@400;500;600;700;800&amp;display=swap" rel="stylesheet">
+<script src="image-slot.js"></script>
+<style>
+  * { box-sizing: border-box; }
+  html, body { margin: 0; padding: 0; }
+  body { --accent: #F4B924; --primary: #0E6B5E; --avatar-radius: 18px; background: #FBF7EF; font-family: 'Hanken Grotesk', system-ui, sans-serif; -webkit-font-smoothing: antialiased; color: #123A35; }
+  a { transition: opacity .15s ease, background .15s ease, color .15s ease; }
+  a:hover { opacity: .85; }
+  html { scroll-behavior: smooth; }
+  @keyframes lightFloat { 0%,100% { transform: translateY(0) rotate(-2deg); } 50% { transform: translateY(-14px) rotate(2deg); } }
+  @keyframes glowPulse { 0%,100% { opacity: .5; transform: scale(1); } 50% { opacity: .85; transform: scale(1.08); } }
+  image-slot { display:block; }
+  .gal-cell img { transition: transform .6s cubic-bezier(.16,.84,.44,1); }
+  .gal-cell:hover img { transform: scale(1.05); }
+  .reveal { opacity:0; transform: translateY(28px); transition: opacity .8s cubic-bezier(.16,.84,.44,1), transform .8s cubic-bezier(.16,.84,.44,1); }
+  .reveal.in-view { opacity:1; transform:none; }
+  .light-logo-hero { transition: transform .5s cubic-bezier(.16,.84,.44,1), box-shadow .5s ease; }
+  .light-logo-hero:hover { transform: scale(1.04) rotate(2deg); }
+  img { max-width: 100%; }
+  @media (max-width: 980px) {
+    .hero { grid-template-columns: 1fr !important; padding-top: 56px !important; padding-bottom: 56px !important; gap: 28px !important; }
+    .hero-art { min-height: 240px !important; order: -1; }
+    .hero-art img { width: 200px !important; height: 200px !important; }
+    .hero-art > div:first-child { width: 240px !important; height: 240px !important; }
+    .hero-h1 { font-size: 46px !important; }
+    .nav-links { gap: 18px !important; }
+    .mission-grid { grid-template-columns: 1fr !important; gap: 20px !important; }
+    .mission-grid > div:first-child { white-space: normal !important; font-size: 24px !important; }
+    .mission-grid p { font-size: 19px !important; }
+    .stats-grid { grid-template-columns: repeat(2, 1fr) !important; }
+    .stats-grid > * { border-bottom: 1px solid rgba(18,58,53,.1); }
+    .benefits-grid { grid-template-columns: 1fr !important; }
+    .team-grid { grid-template-columns: repeat(3, 1fr) !important; }
+    .gal-grid { grid-template-columns: repeat(2, 1fr) !important; }
+    .gal-grid > figure { grid-column: span 1 !important; grid-row: span 1 !important; aspect-ratio: 3/2 !important; }
+    .sec-h2 { font-size: 34px !important; }
+    .cta-h2 { font-size: 34px !important; }
+    .footer-grid { grid-template-columns: 1fr !important; gap: 28px !important; }
+    .vol-feature { grid-template-columns: 1fr !important; gap: 28px !important; }
+    .vol-feature > figure { aspect-ratio: 4/3 !important; }
+    .vol-photos { grid-template-columns: repeat(3, minmax(0,1fr)) !important; }
+    .vol-photos > figure:nth-child(4), .vol-photos > figure:nth-child(5) { aspect-ratio: auto !important; height: 320px; }
+    .vol-photos > figure:nth-child(4) { grid-column: span 1; }
+    .vol-photos > figure:nth-child(5) { grid-column: span 2; }
+    .gal-stage { aspect-ratio: 1.75/1 !important; }
+    .tl2-rail { left: 33px !important; }
+    .tl2-row { grid-template-columns: 66px minmax(0,1fr) !important; gap: 16px; }
+    .tl2-badge { grid-column: 1 !important; align-self: start; }
+    .tl2-card { grid-column: 2 !important; }
+    .tl2-head { justify-content: flex-start !important; }
+    .eb-photo { aspect-ratio: 16/9 !important; }
+    .gal-slide { width: 72% !important; }
+  }
+  @media (max-width: 620px) {
+    .nav-bar { flex-wrap: wrap; gap: 10px; padding: 12px 5vw !important; }
+    .nav-links { width: 100%; gap: 14px !important; overflow-x: auto; -webkit-overflow-scrolling: touch; padding-bottom: 2px; }
+    .nav-links > a { flex: 0 0 auto; font-size: 14px !important; }
+    .nav-links > a:last-child { padding: 9px 16px !important; }
+    .hero { padding-left: 5vw !important; padding-right: 5vw !important; }
+    .hero-h1 { font-size: 36px !important; }
+    .hero p { font-size: 17px !important; }
+    .hero a { font-size: 15px !important; padding: 14px 22px !important; }
+    .stats-grid > div { padding: 30px 12px !important; }
+    .stats-grid .stat-num { font-size: 42px !important; }
+    .team-grid { grid-template-columns: repeat(2, 1fr) !important; gap: 18px !important; }
+    .tl-rail { display: none !important; }
+    .tl-row { grid-template-columns: 1fr !important; gap: 8px !important; }
+    .tl-date { text-align: left !important; padding-top: 0 !important; display: flex; align-items: baseline; gap: 8px; }
+    .tl-date > div:last-child { font-size: 24px !important; }
+    .tl-dot { display: none !important; }
+    .gal-grid { grid-template-columns: 1fr !important; }
+    .sec-h2, .cta-h2 { font-size: 28px !important; }
+    .vol-photos { grid-template-columns: repeat(2, minmax(0,1fr)) !important; }
+    .vol-photos > figure:nth-child(4) { aspect-ratio: 3/4 !important; height: auto !important; }
+    .vol-photos > figure:last-child { grid-column: span 2; aspect-ratio: 3/2 !important; height: auto !important; }
+    .gal-arrow { width: 42px !important; height: 42px !important; }
+    .gal-thumb { width: 74px !important; height: 52px !important; }
+    .ff-wrap { right: 16px !important; bottom: 16px !important; }
+    #about, #events, #team, #gallery, #contact, #volunteer { padding-left: 5vw !important; padding-right: 5vw !important; }
+  }
+  @keyframes ffBob { 0%,100% { transform: translateY(0) rotate(-4deg); } 50% { transform: translateY(-7px) rotate(4deg); } }
+  @keyframes ffFly { 0% { transform: translate(0,0) rotate(0); opacity:1; } 18% { transform: translate(-16px,-10vh) rotate(-14deg); } 42% { transform: translate(14px,-38vh) rotate(12deg); } 68% { transform: translate(-12px,-68vh) rotate(-10deg); opacity:1; } 100% { transform: translate(0,-115vh) rotate(0) scale(.7); opacity:0; } }
+  .ff-btn { animation: ffBob 3.2s ease-in-out infinite; }
+  .ff-btn:hover { filter: brightness(1.08); }
+  .ff-btn.ff-fly { animation: ffFly 1.15s cubic-bezier(.45,0,.55,1) forwards; }
+  .ff-btn.ff-fly .ff-halo { opacity: 1 !important; transform: scale(1.5) !important; }
+  .gal-thumb img { transition: transform .4s ease; }
+  .gal-thumb:hover img { transform: scale(1.08); }
+  .gal-arrow:hover { background: #F4B924 !important; color: #123A35 !important; }
+  @media (prefers-reduced-motion: reduce) {
+    .ff-btn, .ff-btn.ff-fly { animation: none !important; }
+    .reveal { transition:none; opacity:1; transform:none; }
+    [style*="lightFloat"], [style*="glowPulse"] { animation:none !important; }
+  }
+</style>
+</helmet>
+
+<div style="width:100%; background:#FBF7EF; overflow-x:hidden;">
+
+  <!-- NAV -->
+  <div class="nav-bar" style="position:sticky; top:0; z-index:50; display:flex; align-items:center; justify-content:space-between; padding:16px 6vw; background:rgba(251,247,239,.86); backdrop-filter:blur(12px); border-bottom:1px solid rgba(18,58,53,.08);">
+    <a href="#top" style="display:flex; align-items:center; gap:13px; text-decoration:none;">
+      <img src="assets/light-logo.png" alt="LIGHT" style="width:44px; height:44px; border-radius:50%; object-fit:cover;">
+      <div style="line-height:1.05;">
+        <div style="font-weight:800; color:#123A35; font-size:19px; letter-spacing:.02em;">LIGHT</div>
+        <div style="font-size:10.5px; color:#158E7E; font-weight:600; letter-spacing:.05em;">HEALTH TRANSPARENCY</div>
+      </div>
+    </a>
+    <div class="nav-links" style="display:flex; align-items:center; gap:28px;">
+      <a href="#about" style="text-decoration:none; color:#2C4742; font-weight:600; font-size:15px;">About</a>
+      <a href="#team" style="text-decoration:none; color:#2C4742; font-weight:600; font-size:15px;">Team</a>
+      <a href="#events" style="text-decoration:none; color:#2C4742; font-weight:600; font-size:15px;">Events</a>
+      <a href="#volunteer" style="text-decoration:none; color:#2C4742; font-weight:600; font-size:15px;">Volunteering</a>
+      <a href="#gallery" style="text-decoration:none; color:#2C4742; font-weight:600; font-size:15px;">Gallery</a>
+      <a href="#contact" style="text-decoration:none; color:#2C4742; font-weight:600; font-size:15px;">Contact</a>
+      <a href="https://ccc.rochester.edu/light/club_signup" style="text-decoration:none; background:var(--accent); color:#123A35; font-weight:800; font-size:15px; padding:11px 22px; border-radius:100px;">Join LIGHT</a>
+    </div>
+  </div>
+
+  <!-- HERO -->
+  <div id="top" class="hero" style="position:relative; display:grid; grid-template-columns:1.15fr .85fr; gap:40px; padding:92px 6vw 84px; overflow:hidden; align-items:center;">
+    <div style="position:relative; z-index:2;">
+      <div style="display:inline-flex; align-items:center; gap:8px; background:#E3F1ED; color:var(--primary); font-weight:700; font-size:13px; letter-spacing:.03em; padding:8px 15px; border-radius:100px; margin-bottom:26px;">✦ University of Rochester · Student Organization</div>
+      <h1 class="hero-h1" style="font-family:'Newsreader',serif; font-weight:500; font-size:72px; line-height:1.0; letter-spacing:-.02em; color:#123A35; margin:0 0 24px;">Healthcare should be <em style="font-style:italic; color:var(--primary);">accessible</em> to everyone.</h1>
+      <p style="font-size:20px; line-height:1.6; color:#4A5F5A; max-width:540px; margin:0 0 36px;">LIGHT (Leading Initiatives for Greater Health Transparency) empowers low-income and underrepresented communities by breaking down the barriers that make healthcare confusing, one conversation at a time.</p>
+      <div style="display:flex; gap:14px; align-items:center; flex-wrap:wrap;">
+        <a href="https://ccc.rochester.edu/light/club_signup" style="text-decoration:none; background:var(--primary); color:#fff; font-weight:800; font-size:16px; padding:16px 30px; border-radius:100px;">Be part of the change</a>
+        <a href="#contact" style="text-decoration:none; color:#123A35; font-weight:700; font-size:16px; padding:16px 22px; border-radius:100px; border:1.5px solid rgba(18,58,53,.18);">Partner with us →</a>
+      </div>
+    </div>
+    <div class="hero-art" style="position:relative; display:flex; align-items:center; justify-content:center; min-height:360px;">
+      <div style="position:absolute; width:360px; height:360px; border-radius:50%; background:radial-gradient(circle, rgba(244,185,36,.5), rgba(244,185,36,0) 70%); animation:glowPulse 4s ease-in-out infinite;"></div>
+      <img src="assets/light-logo.png" alt="LIGHT firefly logo" class="light-logo-hero" style="position:relative; width:320px; height:320px; border-radius:50%; object-fit:cover; box-shadow:0 30px 60px -20px rgba(14,107,94,.5); animation:lightFloat 6s ease-in-out infinite;">
+    </div>
+  </div>
+
+  <!-- MISSION STRIP -->
+  <div id="about" style="background:#123A35; color:#EAF3F0; padding:64px 6vw;">
+    <div class="mission-grid" style="display:grid; grid-template-columns:auto 1fr; gap:48px; align-items:center; max-width:1100px; margin:0 auto;">
+      <div style="font-family:'Newsreader',serif; font-style:italic; font-size:30px; color:var(--accent); line-height:1.15; white-space:nowrap;">What is<br>LIGHT?</div>
+      <p style="font-size:23px; line-height:1.55; margin:0; font-weight:400; max-width:840px;">LIGHT is more than a club. It's a growing family. We're building a space where members support one another, learn together, and grow as leaders while making a real impact across Rochester. We believe understanding healthcare is a <em style="color:var(--accent); font-style:italic;">right, not a privilege.</em></p>
+    </div>
+  </div>
+
+  <!-- STATS -->
+  <div class="stats-grid" style="display:grid; grid-template-columns:repeat(4,1fr);">
+    <sc-for list="{{ stats }}" as="stat" hint-placeholder-count="4">
+      <div style="padding:48px 24px; text-align:center; border-right:1px solid rgba(18,58,53,.1);">
+        <div class="stat-num" data-count="{{ stat.value }}" style="font-family:'Newsreader',serif; font-weight:500; font-size:58px; color:var(--primary); line-height:1;">{{ stat.value }}</div>
+        <div style="font-size:14px; font-weight:700; letter-spacing:.06em; text-transform:uppercase; color:#4A5F5A; margin-top:10px;">{{ stat.label }}</div>
+      </div>
+    </sc-for>
+  </div>
+
+  <!-- BENEFITS -->
+  <div style="padding:84px 6vw; background:#F4F1E8;">
+    <div style="max-width:1200px; margin:0 auto;">
+      <h2 class="reveal sec-h2" style="font-family:'Newsreader',serif; font-weight:500; font-size:44px; color:#123A35; margin:0 0 10px; letter-spacing:-.01em;">Why join LIGHT</h2>
+      <p class="reveal" style="font-size:18px; color:#4A5F5A; margin:0 0 44px;">Gain real skills while making an impact in Rochester communities.</p>
+      <div class="benefits-grid" style="display:grid; grid-template-columns:repeat(3,1fr); gap:22px;">
+        <sc-for list="{{ benefits }}" as="b" hint-placeholder-count="3">
+          <div class="reveal" style="background:#FBF7EF; border-radius:18px; padding:34px; border:1px solid rgba(18,58,53,.08);">
+            <div style="width:34px; height:3px; border-radius:2px; background:var(--accent,#F4B924); margin-bottom:22px;"></div>
+            <p style="font-size:17px; line-height:1.5; color:#2C4742; font-weight:500; margin:0;">{{ b.text }}</p>
+          </div>
+        </sc-for>
+      </div>
+    </div>
+  </div>
+
+  <!-- GALLERY -->
+  <sc-if value="{{ showGallery }}" hint-placeholder-val="{{ true }}">
+  <div id="gallery" style="padding:84px 6vw;">
+    <div style="max-width:1200px; margin:0 auto;">
+      <div style="display:flex; align-items:center; gap:12px; margin-bottom:8px;">
+        <h2 class="sec-h2" style="font-family:'Newsreader',serif; font-weight:500; font-size:44px; color:#123A35; margin:0; letter-spacing:-.01em;">Gallery</h2>
+      </div>
+      <p style="font-size:18px; color:#4A5F5A; margin:0 0 40px;">Moments from our meetings, speakers, and community events.</p>
+      <div class="reveal" style="display:flex; flex-direction:column; gap:14px;">
+        <div class="gal-stage" tabIndex="0" onKeyDown="{{ galKey }}" onTouchStart="{{ galTouchStart }}" onTouchEnd="{{ galTouchEnd }}" onMouseEnter="{{ galPause }}" style="position:relative; aspect-ratio:2.5/1; overflow:hidden; outline:none; margin:0 -6vw; padding:0;">
+          <sc-for list="{{ gal }}" as="g" hint-placeholder-count="3">
+            <button class="gal-slide" onClick="{{ g.select }}" aria-label="{{ g.alt }}" style="position:absolute; left:50%; top:50%; width:52%; aspect-ratio:3/2; padding:0; border:none; border-radius:22px; overflow:hidden; background:#123A35; cursor:pointer; transform:{{ g.transform }}; opacity:{{ g.opacity }}; z-index:{{ g.z }}; pointer-events:{{ g.pe }}; box-shadow:{{ g.shadow }}; transition:transform .7s cubic-bezier(.22,.8,.25,1), opacity .7s ease, box-shadow .7s ease;">
+              <img src="{{ g.src }}" alt="{{ g.alt }}" style="width:100%; height:100%; object-fit:cover; object-position:{{ g.pos }}; display:block; filter:{{ g.filter }}; transition:filter .7s ease;">
+            </button>
+          </sc-for>
+          <button class="gal-arrow" onClick="{{ galPrev }}" aria-label="Previous photo" style="position:absolute; left:2%; top:50%; transform:translateY(-50%); z-index:20; width:50px; height:50px; border-radius:50%; border:none; background:rgba(251,247,239,.95); color:#123A35; cursor:pointer; display:flex; align-items:center; justify-content:center; box-shadow:0 8px 20px -10px rgba(18,58,53,.5); transition:background .2s ease;"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M15 18l-6-6 6-6"></path></svg></button>
+          <button class="gal-arrow" onClick="{{ galNext }}" aria-label="Next photo" style="position:absolute; right:2%; top:50%; transform:translateY(-50%); z-index:20; width:50px; height:50px; border-radius:50%; border:none; background:rgba(251,247,239,.95); color:#123A35; cursor:pointer; display:flex; align-items:center; justify-content:center; box-shadow:0 8px 20px -10px rgba(18,58,53,.5); transition:background .2s ease;"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M9 18l6-6-6-6"></path></svg></button>
+        </div>
+        <div style="display:flex; flex-direction:column; align-items:center; gap:14px; text-align:center; margin-top:6px;">
+          <p style="margin:0; color:#123A35; font-size:17px; font-weight:600; line-height:1.4; max-width:620px; min-height:48px; text-wrap:pretty;">{{ galCaption }}</p>
+          <div style="display:flex; flex-wrap:wrap; justify-content:center; gap:8px;">
+            <sc-for list="{{ gal }}" as="g" hint-placeholder-count="8">
+              <button onClick="{{ g.select }}" aria-label="{{ g.alt }}" style="width:{{ g.dotW }}; height:8px; padding:0; border:none; border-radius:8px; background:{{ g.dotBg }}; cursor:pointer; transition:width .3s ease, background .3s ease;"></button>
+            </sc-for>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  </sc-if>
+
+  <!-- VOLUNTEERING -->
+  <div id="volunteer" style="padding:84px 6vw; background:#FBF7EF;">
+    <div style="max-width:1200px; margin:0 auto;">
+      <div class="reveal" style="font-size:13px; font-weight:800; letter-spacing:.1em; text-transform:uppercase; color:var(--primary); margin-bottom:12px;">Volunteering</div>
+      <h2 class="reveal sec-h2" style="font-family:'Newsreader',serif; font-weight:500; font-size:44px; color:#123A35; margin:0 0 14px; letter-spacing:-.01em;">Out in the community</h2>
+      <p class="reveal" style="font-size:18px; line-height:1.6; color:#4A5F5A; margin:0 0 48px; max-width:760px; text-wrap:pretty;">LIGHT is a student led organization at the University of Rochester that focuses on raising awareness and providing physical resources for underserved communities in healthcare.</p>
+
+      <div class="vol-feature" style="display:grid; grid-template-columns:minmax(0,1fr) minmax(0,1fr); gap:48px; align-items:center; margin-bottom:56px;">
+        <figure class="reveal gal-cell" style="margin:0; position:relative; overflow:hidden; border-radius:18px; background:#E3F1ED; aspect-ratio:4/5; box-shadow:0 10px 30px -18px rgba(18,58,53,.45);">
+          <img src="assets/vol-table-group.jpg" alt="LIGHT members tabling at the Central Library of Rochester &amp; Monroe County" style="width:100%; height:100%; object-fit:cover; object-position:center 30%; display:block;">
+        </figure>
+        <div class="reveal">
+          <div style="display:inline-flex; align-items:center; gap:8px; background:#FBEAC4; color:#7A4E05; font-weight:700; font-size:13px; letter-spacing:.03em; padding:8px 15px; border-radius:100px; margin-bottom:20px;">Central Library of Rochester &amp; Monroe County</div>
+          <h3 style="font-family:'Newsreader',serif; font-weight:500; font-size:32px; line-height:1.15; color:#123A35; margin:0 0 18px;">Tabling at the public library</h3>
+          <p style="font-size:17px; line-height:1.65; color:#2C4742; margin:0 0 18px; text-wrap:pretty;">We set up a table at the Central Library to share important information about health screenings and connect visitors with health resources across Rochester.</p>
+          <p style="font-size:17px; line-height:1.65; color:#2C4742; margin:0; text-wrap:pretty;">We used the space to provide physical resources to immigrants, Deaf/HH individuals, and Black and Latino community members. We helped with Medicaid applications as best we could, handed out vocabulary lists for common healthcare terms in different languages (our club can speak/sign five different languages!), and pointed visitors to organizations that specialize in hard to access healthcare resources. It was essentially volunteer social work.</p>
+        </div>
+      </div>
+
+      <div class="vol-photos" style="display:grid; grid-template-columns:repeat(5,minmax(0,1fr)); gap:14px;">
+        <figure class="reveal gal-cell" style="margin:0; overflow:hidden; border-radius:16px; background:#E3F1ED; aspect-ratio:3/4;"><img src="assets/vol-tabling.jpg" alt="Members talking with visitors at the LIGHT table" loading="lazy" style="width:100%; height:100%; object-fit:cover; display:block;"></figure>
+        <figure class="reveal gal-cell" style="margin:0; overflow:hidden; border-radius:16px; background:#E3F1ED; aspect-ratio:3/4;"><img src="assets/vol-laughing.jpg" alt="A member laughing with a library visitor and her child" loading="lazy" style="width:100%; height:100%; object-fit:cover; display:block;"></figure>
+        <figure class="reveal gal-cell" style="margin:0; overflow:hidden; border-radius:16px; background:#E3F1ED; aspect-ratio:3/4;"><img src="assets/vol-hug.jpg" alt="A member holding a young visitor in the library atrium" loading="lazy" style="width:100%; height:100%; object-fit:cover; object-position:center 60%; display:block;"></figure>
+        <figure class="reveal gal-cell" style="margin:0; overflow:hidden; border-radius:16px; background:#E3F1ED; aspect-ratio:3/4;"><img src="assets/vol-fistbump.jpg" alt="Two members sharing a fist bump at the library" loading="lazy" style="width:100%; height:100%; object-fit:cover; display:block;"></figure>
+        <figure class="reveal gal-cell" style="margin:0; overflow:hidden; border-radius:16px; background:#E3F1ED; aspect-ratio:3/4;"><img src="assets/vol-guides.jpg" alt="LIGHT family health guides in English and Spanish on a library rack" loading="lazy" style="width:100%; height:100%; object-fit:cover; object-position:center 55%; display:block;"></figure>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- EVENTS TIMELINE -->
+  <div id="events" style="padding:84px 6vw; background:#E3F1ED;">
+    <div style="max-width:1100px; margin:0 auto;">
+      <h2 class="reveal sec-h2" style="font-family:'Newsreader',serif; font-weight:500; font-size:44px; color:#123A35; margin:0 0 8px; letter-spacing:-.01em; text-align:center;">What we've done</h2>
+      <p class="reveal" style="font-size:18px; color:#4A5F5A; margin:0 0 48px; text-align:center;">A year of general meetings, guest speakers, and community conversations.</p>
+      <div style="position:relative;">
+        <div class="tl2-rail" style="position:absolute; left:50%; top:0; bottom:0; width:3px; margin-left:-1.5px; border-radius:3px; background:repeating-linear-gradient(to bottom, rgba(14,107,94,.35) 0 10px, transparent 10px 18px);"></div>
+        <sc-for list="{{ tl }}" as="e" hint-placeholder-count="6">
+          <sc-if value="{{ e.isHead }}" hint-placeholder-val="{{ false }}">
+            <div class="reveal tl2-head" style="position:relative; display:flex; justify-content:center; margin:12px 0 34px;">
+              <div style="background:#123A35; color:#F4B924; font-weight:800; font-size:13px; letter-spacing:.12em; text-transform:uppercase; padding:10px 20px; border-radius:100px; box-shadow:0 0 0 6px #E3F1ED;">{{ e.label }}</div>
+            </div>
+          </sc-if>
+          <sc-if value="{{ e.isEvent }}" hint-placeholder-val="{{ true }}">
+            <div class="reveal tl2-row" style="display:grid; grid-template-columns:minmax(0,1fr) 84px minmax(0,1fr); align-items:center; margin-bottom:22px;">
+              <div class="tl2-badge" style="grid-column:2; grid-row:1; justify-self:center; width:66px; height:66px; border-radius:50%; background:#FBF7EF; border:3px solid #F4B924; display:flex; flex-direction:column; align-items:center; justify-content:center; box-shadow:0 0 0 6px #E3F1ED, 0 0 26px 2px rgba(244,185,36,.45); position:relative; z-index:2;">
+                <div style="font-size:10.5px; font-weight:800; color:var(--primary); letter-spacing:.08em; line-height:1;">{{ e.month }}</div>
+                <div style="font-family:'Newsreader',serif; font-size:24px; color:#123A35; line-height:1.05;">{{ e.day }}</div>
+              </div>
+              <div class="tl2-card" style="grid-column:{{ e.col }}; grid-row:1; background:#FBF7EF; border-radius:20px; padding:22px 26px; border:1px solid rgba(18,58,53,.08); box-shadow:0 12px 26px -22px rgba(18,58,53,.6); transition:transform .3s cubic-bezier(.2,.8,.3,1.4), box-shadow .3s ease;" style-hover="transform:translateY(-5px) rotate({{ e.tilt }}); box-shadow:0 22px 36px -22px rgba(18,58,53,.6);">
+                <div style="display:inline-block; background:{{ e.tagBg }}; color:{{ e.tagFg }}; font-weight:800; font-size:11.5px; letter-spacing:.08em; text-transform:uppercase; padding:5px 11px; border-radius:100px; margin-bottom:12px;">{{ e.tag }}</div>
+                <div style="font-weight:800; color:#123A35; font-size:19px; line-height:1.25; margin-bottom:6px; text-wrap:pretty;">{{ e.title }}</div>
+                <div style="font-size:15px; color:#4A5F5A; line-height:1.5; text-wrap:pretty;">{{ e.desc }}</div>
+              </div>
+            </div>
+          </sc-if>
+        </sc-for>
+      </div>
+    </div>
+  </div>
+
+  <!-- E-BOARD -->
+  <div id="team" style="padding:84px 6vw;">
+    <div style="max-width:1200px; margin:0 auto;">
+      <h2 class="reveal sec-h2" style="font-family:'Newsreader',serif; font-weight:500; font-size:44px; color:#123A35; margin:0 0 8px; letter-spacing:-.01em;">Meet our E-Board</h2>
+      <p class="reveal" style="font-size:18px; color:#4A5F5A; margin:0 0 36px;">The students leading the change at the University of Rochester.</p>
+      <figure class="reveal eb-photo" style="margin:0 0 56px; border-radius:22px; overflow:hidden; aspect-ratio:21/9; background:#E3F1ED; box-shadow:0 24px 50px -30px rgba(18,58,53,.6);">
+        <img src="assets/gal-eboard-2026-web.jpg" alt="The 2026 LIGHT executive board in front of Rush Rhees Library" style="width:100%; height:100%; object-fit:cover; object-position:center 40%; display:block;">
+      </figure>
+      <div class="team-grid" style="display:grid; grid-template-columns:repeat(5,minmax(0,1fr)); gap:36px 32px;">
+        <div class="reveal" style="text-align:center;">
+          <div style="position:relative; width:100%; max-width:150px; margin:0 auto 16px; aspect-ratio:1; border-radius:50%; background:#E3F1ED; overflow:hidden; box-shadow:inset 0 0 0 1px rgba(18,58,53,.08);">
+            <img src="assets/eboard-valeria-v3.jpg" alt="Valeria Díaz" style="position:absolute; inset:0; width:100%; height:100%; object-fit:cover; border-radius:50%;">
+          </div>
+          <div style="font-weight:700; color:#123A35; font-size:15px;">Valeria Díaz</div>
+          <div style="font-size:12.5px; color:#158E7E; font-weight:600; margin-top:3px; line-height:1.3;">President</div>
+        </div>
+        <div class="reveal" style="text-align:center;">
+          <div style="position:relative; width:100%; max-width:150px; margin:0 auto 16px; aspect-ratio:1; border-radius:50%; background:#FBEAC4; overflow:hidden; box-shadow:inset 0 0 0 1px rgba(18,58,53,.08);">
+            <img src="assets/eboard-nicky-v3.jpg" alt="Nicky Faustini" style="position:absolute; inset:0; width:100%; height:100%; object-fit:cover; border-radius:50%;">
+          </div>
+          <div style="font-weight:700; color:#123A35; font-size:15px;">Nicky Faustini</div>
+          <div style="font-size:12.5px; color:#158E7E; font-weight:600; margin-top:3px; line-height:1.3;">Vice President</div>
+        </div>
+        <div class="reveal" style="text-align:center;">
+          <div style="position:relative; width:100%; max-width:150px; margin:0 auto 16px; aspect-ratio:1; border-radius:50%; background:#E3F1ED; overflow:hidden; box-shadow:inset 0 0 0 1px rgba(18,58,53,.08);">
+            <img src="assets/eboard-arianna-v3.jpg" alt="Arianna Carrion" style="position:absolute; inset:0; width:100%; height:100%; object-fit:cover; border-radius:50%;">
+          </div>
+          <div style="font-weight:700; color:#123A35; font-size:15px;">Arianna Carrion</div>
+          <div style="font-size:12.5px; color:#158E7E; font-weight:600; margin-top:3px; line-height:1.3;">Secretary</div>
+        </div>
+        <div class="reveal" style="text-align:center;">
+          <div style="position:relative; width:100%; max-width:150px; margin:0 auto 16px; aspect-ratio:1; border-radius:50%; background:#FBEAC4; overflow:hidden; box-shadow:inset 0 0 0 1px rgba(18,58,53,.08);">
+            <img src="assets/eboard-josh-v3.jpg" alt="Josh Adviento" style="position:absolute; inset:0; width:100%; height:100%; object-fit:cover; border-radius:50%;">
+          </div>
+          <div style="font-weight:700; color:#123A35; font-size:15px;">Josh Adviento</div>
+          <div style="font-size:12.5px; color:#158E7E; font-weight:600; margin-top:3px; line-height:1.3;">Community Outreach Chair</div>
+        </div>
+        <div class="reveal" style="text-align:center;">
+          <div style="position:relative; width:100%; max-width:150px; margin:0 auto 16px; aspect-ratio:1; border-radius:50%; background:#E3F1ED; overflow:hidden; box-shadow:inset 0 0 0 1px rgba(18,58,53,.08);">
+            <img src="assets/eboard-andrea-v3.jpg" alt="Andrea Aviles" style="position:absolute; inset:0; width:100%; height:100%; object-fit:cover; border-radius:50%;">
+          </div>
+          <div style="font-weight:700; color:#123A35; font-size:15px;">Andrea Aviles</div>
+          <div style="font-size:12.5px; color:#158E7E; font-weight:600; margin-top:3px; line-height:1.3;">Programming/Event Chair</div>
+        </div>
+        <div class="reveal" style="text-align:center;">
+          <div style="position:relative; width:100%; max-width:150px; margin:0 auto 16px; aspect-ratio:1; border-radius:50%; background:#E3F1ED; overflow:hidden; box-shadow:inset 0 0 0 1px rgba(18,58,53,.08);">
+            <img src="assets/eboard-shamsa-v3.jpg" alt="Shamsa Ali" style="position:absolute; inset:0; width:100%; height:100%; object-fit:cover; border-radius:50%;">
+          </div>
+          <div style="font-weight:700; color:#123A35; font-size:15px;">Shamsa Ali</div>
+          <div style="font-size:12.5px; color:#158E7E; font-weight:600; margin-top:3px; line-height:1.3;">Programming/Event Chair</div>
+        </div>
+        <div class="reveal" style="text-align:center;">
+          <div style="position:relative; width:100%; max-width:150px; margin:0 auto 16px; aspect-ratio:1; border-radius:50%; background:#FBEAC4; overflow:hidden; box-shadow:inset 0 0 0 1px rgba(18,58,53,.08);">
+            <img src="assets/eboard-diego-v3.jpg" alt="Diego Barberena" style="position:absolute; inset:0; width:100%; height:100%; object-fit:cover; border-radius:50%;">
+          </div>
+          <div style="font-weight:700; color:#123A35; font-size:15px;">Diego Barberena</div>
+          <div style="font-size:12.5px; color:#158E7E; font-weight:600; margin-top:3px; line-height:1.3;">Business Manager</div>
+        </div>
+        <div class="reveal" style="text-align:center;">
+          <div style="position:relative; width:100%; max-width:150px; margin:0 auto 16px; aspect-ratio:1; border-radius:50%; background:#E3F1ED; overflow:hidden; box-shadow:inset 0 0 0 1px rgba(18,58,53,.08);">
+            <img src="assets/eboard-juniel-v3.jpg" alt="Juniel Carpio" style="position:absolute; inset:0; width:100%; height:100%; object-fit:cover; border-radius:50%;">
+          </div>
+          <div style="font-weight:700; color:#123A35; font-size:15px;">Juniel Carpio</div>
+          <div style="font-size:12.5px; color:#158E7E; font-weight:600; margin-top:3px; line-height:1.3;">Publicity Chair</div>
+        </div>
+        <div class="reveal" style="text-align:center;">
+          <div style="position:relative; width:100%; max-width:150px; margin:0 auto 16px; aspect-ratio:1; border-radius:50%; background:#FBEAC4; overflow:hidden; box-shadow:inset 0 0 0 1px rgba(18,58,53,.08);">
+            <img src="assets/eboard-ashna-v3.jpg" alt="Ashna Rahman" style="position:absolute; inset:0; width:100%; height:100%; object-fit:cover; border-radius:50%;">
+          </div>
+          <div style="font-weight:700; color:#123A35; font-size:15px;">Ashna Rahman</div>
+          <div style="font-size:12.5px; color:#158E7E; font-weight:600; margin-top:3px; line-height:1.3;">Community Outreach Chair</div>
+        </div>
+        <div class="reveal" style="text-align:center;">
+          <div style="position:relative; width:100%; max-width:150px; margin:0 auto 16px; aspect-ratio:1; border-radius:50%; background:#FBEAC4; overflow:hidden; box-shadow:inset 0 0 0 1px rgba(18,58,53,.08);">
+            <img src="assets/eboard-cat.png?v=2" alt="Cat Crawford" style="position:absolute; inset:0; width:100%; height:100%; object-fit:cover; border-radius:50%;">
+          </div>
+          <div style="font-weight:700; color:#123A35; font-size:15px;">Cat Crawford</div>
+          <div style="font-size:12.5px; color:#158E7E; font-weight:600; margin-top:3px; line-height:1.3;">Advisor</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+
+  <!-- JOIN CTA -->
+  <div style="position:relative; padding:88px 6vw; text-align:center; background:var(--primary); color:#fff; overflow:hidden;">
+    <div style="position:absolute; top:-60px; right:-40px; width:280px; height:280px; border-radius:50%; background:radial-gradient(circle, rgba(244,185,36,.4), transparent 70%);"></div>
+    <div style="position:absolute; bottom:-80px; left:-40px; width:280px; height:280px; border-radius:50%; background:radial-gradient(circle, rgba(244,185,36,.25), transparent 70%);"></div>
+    <h2 class="cta-h2" style="font-family:'Newsreader',serif; font-weight:500; font-size:50px; margin:0 0 16px; letter-spacing:-.01em; position:relative;">Make an impact in Rochester.</h2>
+    <p style="font-size:19px; opacity:.9; max-width:620px; margin:0 auto 34px; position:relative;">Meet students who care, build insurance-literacy resources, and help your community navigate healthcare with confidence.</p>
+    <a href="https://ccc.rochester.edu/light/club_signup" style="position:relative; text-decoration:none; background:var(--accent); color:#123A35; font-weight:800; font-size:17px; padding:17px 40px; border-radius:100px;">Join LIGHT today</a>
+  </div>
+
+  <!-- CONTACT / FOOTER -->
+  <div id="contact" style="padding:72px 6vw 56px; background:#123A35; color:#B9CFC9;">
+    <div class="footer-grid" style="max-width:1200px; margin:0 auto; display:grid; grid-template-columns:1.3fr 1fr 1fr; gap:44px; padding-bottom:44px; border-bottom:1px solid rgba(255,255,255,.12);">
+      <div>
+        <div style="display:flex; align-items:center; gap:13px; margin-bottom:18px;">
+          <img src="assets/light-logo.png" alt="LIGHT" style="width:46px; height:46px; border-radius:50%; object-fit:cover;">
+          <div style="font-weight:800; color:#fff; font-size:20px; letter-spacing:.02em;">LIGHT</div>
+        </div>
+        <p style="font-size:15px; line-height:1.6; margin:0; max-width:340px;">Leading Initiatives for Greater Health Transparency, a student organization at the University of Rochester.</p>
+      </div>
+      <div>
+        <div style="font-size:13px; font-weight:800; letter-spacing:.1em; text-transform:uppercase; color:var(--accent); margin-bottom:16px;">Get in touch</div>
+        <a href="mailto:light.health.org@gmail.com" style="display:block; color:#EAF3F0; text-decoration:none; font-size:15px; margin-bottom:10px;">light.health.org@gmail.com</a>
+        <a href="https://ccc.rochester.edu/light/" style="display:block; color:#B9CFC9; text-decoration:none; font-size:15px;">CampusGroups page →</a>
+      </div>
+      <div>
+        <div style="font-size:13px; font-weight:800; letter-spacing:.1em; text-transform:uppercase; color:var(--accent); margin-bottom:16px;">Follow us</div>
+        <a href="https://www.instagram.com/light.healthorg/" style="display:block; color:#EAF3F0; text-decoration:none; font-size:15px; margin-bottom:10px;">Instagram · @light.healthorg</a>
+      </div>
+    </div>
+    <div style="max-width:1200px; margin:24px auto 0; display:flex; justify-content:space-between; flex-wrap:wrap; gap:12px; font-size:13px; color:#7FA097;">
+      <div>© 2026 Leading Initiatives for Greater Health Transparency</div>
+      <div>University of Rochester · Rochester, NY</div>
+    </div>
+  </div>
+
+  <div class="ff-wrap" style="position:fixed; right:28px; bottom:28px; z-index:80; opacity:{{ ffOpacity }}; pointer-events:{{ ffPointer }}; transition:opacity .35s ease;">
+    <button ref="{{ ffRef }}" class="ff-btn" onClick="{{ toTop }}" aria-label="Back to top" title="Fly back to top" style="position:relative; width:62px; height:62px; border:none; padding:0; background:transparent; cursor:pointer; display:block;">
+      <div class="ff-halo" style="position:absolute; inset:-14px; border-radius:50%; background:radial-gradient(circle, rgba(244,185,36,.75), rgba(244,185,36,0) 68%); opacity:.7; transition:opacity .3s ease, transform .3s ease; animation:glowPulse 2.6s ease-in-out infinite;"></div>
+      <img src="assets/light-logo.png" alt="" style="position:relative; width:62px; height:62px; border-radius:50%; object-fit:cover; display:block; box-shadow:0 10px 24px -8px rgba(14,107,94,.6), 0 0 0 3px #FBF7EF;">
+      <div style="position:absolute; left:50%; top:-9px; transform:translateX(-50%); width:0; height:0; border-left:7px solid transparent; border-right:7px solid transparent; border-bottom:8px solid #123A35;"></div>
+    </button>
+  </div>
+
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props="{&quot;$preview&quot;:{&quot;width&quot;:1280,&quot;height&quot;:900},&quot;accentColor&quot;:{&quot;editor&quot;:&quot;color&quot;,&quot;default&quot;:&quot;#F4B924&quot;,&quot;tsType&quot;:&quot;string&quot;,&quot;section&quot;:&quot;Theme&quot;,&quot;options&quot;:[&quot;#F4B924&quot;,&quot;#F2921C&quot;,&quot;#E8641E&quot;,&quot;#1FA89A&quot;]},&quot;primaryColor&quot;:{&quot;editor&quot;:&quot;color&quot;,&quot;default&quot;:&quot;#0E6B5E&quot;,&quot;tsType&quot;:&quot;string&quot;,&quot;section&quot;:&quot;Theme&quot;,&quot;options&quot;:[&quot;#0E6B5E&quot;,&quot;#123A35&quot;,&quot;#1A7A6B&quot;,&quot;#2A6FDB&quot;]},&quot;showGallery&quot;:{&quot;editor&quot;:&quot;boolean&quot;,&quot;default&quot;:true,&quot;tsType&quot;:&quot;boolean&quot;,&quot;section&quot;:&quot;Sections&quot;},&quot;roundAvatars&quot;:{&quot;editor&quot;:&quot;boolean&quot;,&quot;default&quot;:false,&quot;tsType&quot;:&quot;boolean&quot;,&quot;section&quot;:&quot;Team&quot;}}">
+class Component extends DCLogic {
+  applyTheme() {
+    const b = document.body && document.body.style;
+    if (!b) return;
+    b.setProperty('--accent', this.props.accentColor ?? '#F4B924');
+    b.setProperty('--primary', this.props.primaryColor ?? '#0E6B5E');
+    b.setProperty('--avatar-radius', (this.props.roundAvatars ?? false) ? '50%' : '18px');
+  }
+  state = { gi: 0, showTop: false, flying: false, hideUntilTop: false, paused: false };
+  ffRef = React.createRef();
+  componentDidMount() {
+    this.applyTheme(); this.setupAnim();
+    this._onScroll = () => {
+      const y = window.scrollY || 0;
+      const showTop = y > 600;
+      const patch = {};
+      if (showTop !== this.state.showTop) patch.showTop = showTop;
+      if (y < 60 && this.state.hideUntilTop) patch.hideUntilTop = false;
+      if (Object.keys(patch).length) this.setState(patch);
+    };
+    window.addEventListener('scroll', this._onScroll, { passive: true });
+    this._onScroll();
+    this._auto = setInterval(() => { if (!this.state.paused && !document.hidden) this.go(1); }, 5500);
+  }
+  componentWillUnmount() { window.removeEventListener('scroll', this._onScroll); clearInterval(this._auto); }
+  go(d) { const n = this.galPhotos().length; this.setState(s => ({ gi: (s.gi + d + n) % n })); }
+  galPhotos() {
+    return [
+      ["assets/vol-table-group.jpg", "Tabling at the Central Library of Rochester & Monroe County", "center 30%"],
+      ["assets/gal-fair-all-wide-web.jpg", "LIGHT at the campus activities fair", "center"],
+      ["assets/gal-fair-rocky-wide-web.jpg", "Members with Rocky the Yellowjacket at the activities fair", "center"],
+      ["assets/gal-9.png", "Dr. Carolyn Stern presenting on Deaf accessibility in healthcare", "center"],
+      ["assets/gal-3.png", "Nicky with guest speaker Dr. Carolyn Stern", "center"],
+      ["assets/gal-6-web.jpg", "General members meeting, Spring 2025", "center"],
+      ["assets/gal-8-web.jpg", "General interest meeting, Fall 2025", "center"],
+      ["assets/gal-1.png", "Tabling at a resource fair", "center"],
+      ["assets/gal-2-web.jpg", "Members listening at one of our guest speaker meetings", "center"],
+      ["assets/gal-4.png", "Presentation on the phases of the disparities research agenda", "center"],
+      ["assets/gal-7.png", "A talk on rural maternal mortality and access to obstetric services", "center"],
+      ["assets/gal-5-web.jpg", "Members coming out to one of our speaker events", "center"],
+    ];
+  }
+  toTop() {
+    const el = this.ffRef.current;
+    const reduce = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    window.scrollTo({ top: 0, behavior: reduce ? 'auto' : 'smooth' });
+    if (!el || reduce || this.state.flying) return;
+    this.setState({ flying: true });
+    el.classList.add('ff-fly');
+    setTimeout(() => {
+      this.setState({ flying: false, hideUntilTop: (window.scrollY || 0) >= 60 });
+      setTimeout(() => el.classList.remove('ff-fly'), 400);
+    }, 1150);
+  }
+  componentDidUpdate() { this.applyTheme(); this.setupAnim(); }
+  setupAnim() {
+    if (typeof window === 'undefined' || !('IntersectionObserver' in window)) return;
+    const reduce = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    const revIO = this._revIO || (this._revIO = new IntersectionObserver((entries) => {
+      entries.forEach((en) => {
+        if (en.isIntersecting) { en.target.classList.add('in-view'); this._revIO.unobserve(en.target); }
+      });
+    }, { threshold: 0.12, rootMargin: '0px 0px -6% 0px' }));
+    document.querySelectorAll('.reveal:not([data-obs])').forEach((el) => {
+      el.setAttribute('data-obs', '1');
+      if (reduce) { el.classList.add('in-view'); } else { revIO.observe(el); }
+    });
+    const numIO = this._numIO || (this._numIO = new IntersectionObserver((entries) => {
+      entries.forEach((en) => {
+        if (en.isIntersecting) { this.countUp(en.target); this._numIO.unobserve(en.target); }
+      });
+    }, { threshold: 0.5 }));
+    document.querySelectorAll('[data-count]:not([data-obs])').forEach((el) => {
+      el.setAttribute('data-obs', '1');
+      const target = parseInt(el.getAttribute('data-count'), 10) || 0;
+      if (reduce) { el.textContent = String(target); return; }
+      el.textContent = '0';
+      numIO.observe(el);
+    });
+  }
+  countUp(el) {
+    const target = parseInt(el.getAttribute('data-count'), 10) || 0;
+    const dur = 1400, start = performance.now();
+    const ease = (t) => 1 - Math.pow(1 - t, 3);
+    const step = (now) => {
+      const p = Math.min(1, (now - start) / dur);
+      el.textContent = String(Math.round(ease(p) * target));
+      if (p < 1) requestAnimationFrame(step);
+      else el.textContent = String(target);
+    };
+    requestAnimationFrame(step);
+  }
+  renderVals() {
+    const stats = [
+      { value: "10", label: "Officers" },
+      { value: "174", label: "Members" },
+      { value: "16", label: "Events" },
+      { value: "33", label: "Newsletters" },
+    ];
+    const benefits = [
+      { text: "Work on healthcare access issues affecting Rochester communities." },
+      { text: "Help create insurance-literacy materials, plain-language guides & infographics." },
+      { text: "Participate in community outreach events with local partners." },
+    ];
+    const rawMembers = [
+      ["Valeria Díaz", "President", "assets/eboard-valeria-v3.jpg"],
+      ["Nicky Faustini", "Vice President", "assets/eboard-nicky-v3.jpg"],
+      ["Arianna Carrion", "Secretary", "assets/eboard-arianna-v3.jpg"],
+      ["Josh Adviento", "Community Outreach Chair", "assets/eboard-josh-v3.jpg"],
+      ["Andrea Aviles", "Programming/Event Chair", "assets/eboard-andrea-v3.jpg"],
+      ["Cat Crawford", "Advisor", "assets/eboard-cat.png?v=2"],
+    ];
+    const tones = [
+      { bg: "#E3F1ED", fg: "var(--primary)" },
+      { bg: "#FBEAC4", fg: "#C9820E" },
+    ];
+    const members = rawMembers.map((m, i) => {
+      const parts = m[0].split(" ");
+      const initials = (parts[0][0] + (parts[1] ? parts[1][0] : "")).toUpperCase();
+      const t = tones[i % 2];
+      return { name: m[0], role: m[1], photo: m[2], initials, bg: t.bg, fg: t.fg, slotId: "eboard-" + i };
+    });
+    const events = [
+      { month: "OCT", day: "31", title: "Come Chill with LIGHT", desc: "A Halloween hangout for members. Costumes welcome." },
+      { month: "OCT", day: "21", title: "Kearns Living Room Takeover", desc: "With CRANES: making Breast Cancer Awareness posters, then an interactive discussion on cancer treatment decisions." },
+      { month: "OCT", day: "17", title: "Reproductive Health", desc: "A general meeting on reproductive health and access to care." },
+      { month: "OCT", day: "03", title: "Illuminating Minds: A Conversation on Neurodiversity", desc: "A discussion on neurodiversity and how the healthcare system serves neurodivergent people." },
+      { month: "SEP", day: "19", title: "Autoimmune & Uninsured", desc: "Our first GMM of the semester: how autoimmune diseases pose significant barriers to receiving care, and how we can keep breaking them down.", where: "Genesee 309 · Sat 12 PM" },
+      { month: "APR", day: "18", title: "Women in Health Research", desc: "A discussion on the overall underrepresentation of women in health-related research.", where: "Douglass Commons 407 · Sat 12 PM" },
+      { month: "APR", day: "04", title: "The Price Is Right: Healthcare Edition", desc: "A game-show twist on U.S. vs. global drug and procedure costs, guess the price of care and face an eye-opening reality check.", where: "General Meeting" },
+      { month: "MAR", day: "21", title: "Barriers in Mental Healthcare", desc: "How insurance policies and healthcare disparities uniquely impact mental-health access for marginalized communities.", where: "Wilson Commons 121 · 12–1 PM" },
+      { month: "FEB", day: "21", title: "The Black Experience in Healthcare", desc: "A Black History Month conversation on preserving and protecting Black identities as modern medicine develops cultural consciousness. Cosponsored with DLH.", where: "Douglass Leadership House · 12–1 PM" },
+      { month: "FEB", day: "11", title: "Deaf in Healthcare with Dr. Carolyn Stern, MD", desc: "A Deaf urgent-care physician on the disparities facing Deaf/HH individuals, sharp, funny, and eye-opening.", where: "Gowen Room, Wilson Commons · 6–7:30 PM" },
+      { month: "NOV", day: "22", title: "Jeopardy: Mind the Health Gap", desc: "An interactive general meeting on healthcare disparities, played as Jeopardy.", where: "Douglass Commons 404 · 12 PM" },
+      { month: "NOV", day: "13", title: "Research & Advocacy with Dr. Tali Ziv", desc: "The U of R public-health professor on how incarceration, poverty, and healthcare systems shape health equity in communities of color.", where: "Humanities Conf. Room D, Rush Rhees · 5 PM" },
+      { month: "NOV", day: "08", title: "Public vs. Private Insurance", desc: "An open discussion on public and private insurance in the U.S. healthcare system.", where: "Douglass Commons 404 · 12 PM" },
+      { month: "OCT", day: "25", title: "Health Disparities in Indigenous Communities", desc: "An open discussion on the barriers to care facing Indigenous communities.", where: "General Meeting · 12 PM" },
+      { month: "OCT", day: "04", title: "Latino Health Equity", desc: "A Hispanic Heritage Month look at health equity within Latino communities: the challenges and opportunities for fairer access to care.", where: "General Meeting" },
+      { month: "SEP", day: "20", title: "What Is Health Equity?", desc: "Our kickoff meeting: what health equity means, common barriers, and strategies to close the gaps.", where: "Douglass Commons 407 · 12–1 PM" },
+    ];
+    const tagMap = { "Come Chill with LIGHT": "Social", "Kearns Living Room Takeover": "Collab", "Autoimmune & Uninsured": "GMM", "The Price Is Right: Healthcare Edition": "Game", "The Black Experience in Healthcare": "Collab", "Deaf in Healthcare with Dr. Carolyn Stern, MD": "Speaker", "Jeopardy: Mind the Health Gap": "Game", "Research & Advocacy with Dr. Tali Ziv": "Speaker", "What Is Health Equity?": "Kickoff" };
+    const tagTone = { Social: ["#FBEAC4", "#7A4E05"], Collab: ["#123A35", "#F4B924"], GMM: ["#D3ECE6", "#0E6B5E"], Game: ["#F4B924", "#123A35"], Speaker: ["#0E6B5E", "#FFFFFF"], Kickoff: ["#FBEAC4", "#7A4E05"], Discussion: ["#D3ECE6", "#0E6B5E"] };
+    const sems = [[0, "Fall 2025"], [5, "Spring 2025"], [10, "Fall 2024"]];
+    const tl = []; let k = 0;
+    events.forEach((ev, i) => {
+      const s = sems.find(x => x[0] === i); if (s) tl.push({ isHead: true, isEvent: false, label: s[1] });
+      const tag = tagMap[ev.title] || "Discussion", tone = tagTone[tag];
+      tl.push({ ...ev, isHead: false, isEvent: true, tag, tagBg: tone[0], tagFg: tone[1], col: k % 2 ? "3" : "1", tilt: k % 2 ? ".6deg" : "-.6deg" }); k++;
+    });
+    const photos = this.galPhotos();
+    const gi = this.state.gi;
+    const pause = () => { if (!this.state.paused) this.setState({ paused: true }); };
+    const gal = photos.map((p, i) => ({
+      src: p[0], alt: p[1], pos: p[2],
+      ...(() => {
+        const n = photos.length; let o = ((i - gi) % n + n) % n; if (o > n / 2) o -= n;
+        const a = Math.abs(o), sc = [1, .78, .6][Math.min(a, 2)];
+        return {
+          transform: 'translate(calc(-50% + ' + (o * 72) + '%), -50%) scale(' + (a > 2 ? .5 : sc) + ')',
+          opacity: a === 0 ? 1 : a === 1 ? .9 : a === 2 ? .45 : 0,
+          z: 10 - a, pe: a > 1 ? 'none' : 'auto',
+          filter: a === 0 ? 'none' : 'saturate(.7) brightness(.85)',
+          shadow: a === 0 ? '0 30px 60px -30px rgba(18,58,53,.7)' : '0 14px 30px -20px rgba(18,58,53,.5)',
+        };
+      })(),
+      dotW: i === gi ? '26px' : '8px', dotBg: i === gi ? '#F4B924' : 'rgba(18,58,53,.22)',
+      select: () => this.setState({ gi: i, paused: true }),
+    }));
+    const st = this.state;
+    return {
+      stats, benefits, members, events, tl, showGallery: this.props.showGallery ?? true,
+      gal, galCaption: photos[gi][1] + '  ·  ' + String(gi + 1) + '/' + photos.length, galCounter: String(gi + 1).padStart(2, '0') + ' / ' + String(photos.length).padStart(2, '0'),
+      galPrev: () => { pause(); this.go(-1); }, galNext: () => { pause(); this.go(1); }, galPause: pause,
+      galKey: (e) => { if (e.key === 'ArrowLeft') { pause(); this.go(-1); } if (e.key === 'ArrowRight') { pause(); this.go(1); } },
+      galTouchStart: (e) => { this._tx = e.touches[0].clientX; },
+      galTouchEnd: (e) => { const dx = e.changedTouches[0].clientX - (this._tx || 0); if (Math.abs(dx) > 40) { pause(); this.go(dx < 0 ? 1 : -1); } },
+      ffRef: this.ffRef, toTop: () => this.toTop(),
+      ffOpacity: (st.flying || (st.showTop && !st.hideUntilTop)) ? 1 : 0,
+      ffPointer: (st.showTop && !st.hideUntilTop && !st.flying) ? 'auto' : 'none',
+    };
+  }
+}
+</script>
+</body>
+</html>
